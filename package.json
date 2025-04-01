@@ -17,6 +17,7 @@
   "homepage": "https://github.com/code-warrior/gulp-scaffold#readme",
   "description": "",
   "devDependencies": {
+    "gulp": "^5.0.0",
     "gulp-html": "^6.1.0"
   }
 }
