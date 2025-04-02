@@ -1,7 +1,8 @@
 const { src, dest, series, watch } = require(`gulp`),
     htmlValidator = require(`gulp-html`),
     htmlCompressor = require(`gulp-htmlmin`),
-    cssValidator = require(`gulp-stylelint`);
+    cssValidator = require(`gulp-stylelint`),
+    cssCompressor = require(`gulp-clean-css`);
 
 let validateHTML = () => {
     return src(`index.html`)
@@ -25,6 +26,13 @@ let validateCSS = () => {
         }));
 };
 
+let compressCSS = () => {
+    return src(`styles/*.css`)
+        .pipe(cssCompressor())
+        .pipe(dest(`prod/styles`));
+};
+
 exports.validateHTML = validateHTML;
 exports.compressHTML = compressHTML;
 exports.validateCSS = validateCSS;
+exports.compressCSS = compressCSS;
