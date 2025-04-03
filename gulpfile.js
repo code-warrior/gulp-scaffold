@@ -2,6 +2,7 @@ const { src, dest, series, watch } = require(`gulp`),
     htmlValidator = require(`gulp-html`),
     htmlCompressor = require(`gulp-htmlmin`),
     cssValidator = require(`gulp-stylelint`),
+    jsLinter = require(`gulp-eslint`),
     cssCompressor = require(`gulp-clean-css`);
 
 let validateHTML = () => {
@@ -13,6 +14,12 @@ let compressHTML = () => {
     return src(`index.html`)
         .pipe(htmlCompressor({collapseWhitespace:true}))
         .pipe(dest(`prod`));
+};
+
+let validateJS = () => {
+    return src(`scripts/main.js`)
+        .pipe(jsLinter())
+        .pipe(jsLinter.formatEach(`compact`));
 };
 
 let validateCSS = () => {
@@ -36,3 +43,4 @@ exports.validateHTML = validateHTML;
 exports.compressHTML = compressHTML;
 exports.validateCSS = validateCSS;
 exports.compressCSS = compressCSS;
+exports.validateJS = validateJS;
