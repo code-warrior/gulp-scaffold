@@ -5,7 +5,9 @@ const { src, dest, series, watch } = require(`gulp`),
     jsLinter = require(`gulp-eslint`),
     babel = require(`gulp-babel`),
     jsCompressor = require(`gulp-uglify`),
-    cssCompressor = require(`gulp-clean-css`);
+    cssCompressor = require(`gulp-clean-css`),
+    browserSync = require(`browser-sync`),
+    reload = browserSync.reload;
 
 let validateHTML = () => {
     return src(`index.html`)
@@ -54,6 +56,30 @@ let transpileJSForProd = () => {
         .pipe(dest(`prod/scripts`));
 };
 
+let serve = () => {
+    browserSync({
+        notify: true,
+        reloadDelay: 50,
+        server: {
+            baseDir: [
+                `./`,
+                `./styles`,
+                `temp`
+            ]
+        }
+    });
+
+    watch(`scripts/main.js`, series(validateJS, transpileJSForDev))
+        .on(`change`, reload);
+
+    watch(`styles/main.css`, validateCSS)
+        .on(`change`, reload);
+
+    watch(`index.html`, validateHTML)
+        .on(`change`, reload);
+};
+
+exports.default = serve;
 exports.validateHTML = validateHTML;
 exports.compressHTML = compressHTML;
 exports.validateCSS = validateCSS;
